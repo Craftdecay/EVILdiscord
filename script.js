@@ -1,26 +1,130 @@
-const messages = document.getElementById("messages");
-const input = document.getElementById("messageInput");
-const send = document.getElementById("send");
+import {auth, db} from "./firebase.js";
 
-function sendMessage(){
 
-    if(input.value.trim()=="") return;
+import {
+createUserWithEmailAndPassword,
+signInWithEmailAndPassword,
+onAuthStateChanged
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-    const div = document.createElement("div");
-    div.className="message";
-    div.innerHTML="<b>You:</b> "+input.value;
 
-    messages.appendChild(div);
+import {
+collection,
+addDoc,
+onSnapshot,
+serverTimestamp,
+query,
+orderBy
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-    input.value="";
 
-    messages.scrollTop=messages.scrollHeight;
+
+const email = document.getElementById("email");
+const password = document.getElementById("password");
+
+
+document.getElementById("register").onclick = async()=>{
+
+await createUserWithEmailAndPassword(
+auth,
+email.value,
+password.value
+);
+
+};
+
+
+
+document.getElementById("login").onclick = async()=>{
+
+await signInWithEmailAndPassword(
+auth,
+email.value,
+password.value
+);
+
+};
+
+
+
+onAuthStateChanged(auth,user=>{
+
+if(user){
+
+document.querySelector(".login").style.display="none";
+
+document.querySelector(".chat").style.display="flex";
+
+loadMessages();
+
 }
 
-send.onclick=sendMessage;
-
-input.addEventListener("keypress",e=>{
-    if(e.key==="Enter"){
-        sendMessage();
-    }
 });
+
+
+
+const messages=document.getElementById("messages");
+
+
+async function sendMessage(){
+
+let input=document.getElementById("messageInput");
+
+
+if(input.value.trim()=="")
+return;
+
+
+await addDoc(collection(db,"messages"),{
+
+text:input.value,
+
+user:auth.currentUser.email,
+
+time:serverTimestamp()
+
+});
+
+
+input.value="";
+
+}
+
+
+document.getElementById("send").onclick=sendMessage;
+
+
+
+function loadMessages(){
+
+const q=query(
+collection(db,"messages"),
+orderBy("time")
+);
+
+
+onSnapshot(q,(snapshot)=>{
+
+messages.innerHTML="";
+
+
+snapshot.forEach(doc=>{
+
+let data=doc.data();
+
+
+messages.innerHTML +=
+`
+<div>
+<b>${data.user}</b>: ${data.text}
+</div>
+`;
+
+});
+
+
+});
+
+}
