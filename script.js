@@ -201,3 +201,13 @@ function loadMessages(){
     });
 
 }
+console.log("Bottom of script reached!");
+
+document.querySelectorAll(".voice-channel").forEach(channel => {
+    console.log("Found channel:", channel.dataset.channel);
+
+    channel.addEventListener("click", () => {
+        console.log("Clicked:", channel.dataset.channel);
+        alert("Clicked " + channel.dataset.channel);
+    });
+});
