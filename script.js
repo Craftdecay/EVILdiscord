@@ -42,6 +42,9 @@ const send = document.getElementById("send");
 
 let currentUsername = "";
 
+window.addEventListener("error", (e) => {
+    console.error("Script error:", e.error || e.message);
+});
 
 // Create account
 document.getElementById("register").onclick = async () => {
