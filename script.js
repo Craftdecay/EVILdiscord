@@ -6,6 +6,7 @@ import {
 } from "./voice.js";
 
 import {
+    collection,
     doc,
     setDoc,
     deleteDoc,
@@ -20,7 +21,6 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 import {
-    collection,
     addDoc,
     onSnapshot,
     serverTimestamp,
