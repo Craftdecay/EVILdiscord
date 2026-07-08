@@ -5,6 +5,24 @@ import {
     leaveVoice
 } from "./voice.js";
 
+document
+.querySelectorAll(".voice-channel")
+.forEach(channel=>{
+
+    channel.onclick=()=>{
+
+        joinVoice(
+            channel.dataset.channel
+        );
+
+    };
+
+});
+
+document
+.getElementById("leaveVoice")
+.onclick=leaveVoice;
+
 import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
