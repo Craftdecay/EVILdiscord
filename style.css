@@ -1,0 +1,97 @@
+body{
+    margin:0;
+    display:flex;
+    height:100vh;
+    background:#313338;
+    color:white;
+    font-family:sans-serif;
+}
+
+.servers{
+    width:72px;
+    background:#1e1f22;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:10px;
+}
+
+.server{
+    width:50px;
+    height:50px;
+    background:#5865F2;
+    border-radius:50%;
+    margin:10px 0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    cursor:pointer;
+}
+
+.channels{
+    width:240px;
+    background:#2b2d31;
+    padding:15px;
+}
+
+.channel{
+    padding:8px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+.channel:hover{
+    background:#404249;
+}
+
+.chat{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+}
+
+.header{
+    padding:15px;
+    background:#313338;
+    border-bottom:1px solid #444;
+}
+
+#messages{
+    flex:1;
+    padding:20px;
+    overflow-y:auto;
+}
+
+.message{
+    margin-bottom:12px;
+}
+
+.inputBar{
+    display:flex;
+    padding:20px;
+}
+
+input{
+    flex:1;
+    padding:12px;
+    border:none;
+    border-radius:8px;
+    background:#383a40;
+    color:white;
+}
+
+button{
+    margin-left:10px;
+    padding:12px 20px;
+    border:none;
+    border-radius:8px;
+    background:#5865F2;
+    color:white;
+    cursor:pointer;
+}
+
+.members{
+    width:240px;
+    background:#2b2d31;
+    padding:15px;
+}
