@@ -32,32 +32,34 @@ let currentUsername = "";
 
 
 // Create account
-document.getElementById("register").onclick = async()=>{
+document.getElementById("register").onclick = async () => {
+    try {
 
-    if(username.value.trim() === ""){
-        alert("Please enter a username");
-        return;
-    }
-
-
-    const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email.value,
-        password.value
-    );
-
-
-    await setDoc(
-        doc(db,"users",userCredential.user.uid),
-        {
-            username: username.value,
-            email: email.value
+        if (username.value.trim() === "") {
+            alert("Please enter a username");
+            return;
         }
-    );
 
+        const userCredential = await createUserWithEmailAndPassword(
+            auth,
+            email.value.trim(),
+            password.value
+        );
 
-    alert("Account created!");
+        await setDoc(
+            doc(db, "users", userCredential.user.uid),
+            {
+                username: username.value.trim(),
+                email: email.value.trim()
+            }
+        );
 
+        alert("Account created!");
+
+    } catch (error) {
+        console.error(error);
+        alert(error.code + "\n" + error.message);
+    }
 };
 
 
