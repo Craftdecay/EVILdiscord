@@ -64,17 +64,23 @@ document.getElementById("register").onclick = async () => {
 
 
 
-// Login
-document.getElementById("login").onclick = async()=>{
+document.getElementById("login").onclick = async () => {
+    try {
 
-    await signInWithEmailAndPassword(
-        auth,
-        email.value,
-        password.value
-    );
+        const userCredential = await signInWithEmailAndPassword(
+            auth,
+            email.value.trim(),
+            password.value
+        );
 
+        console.log(userCredential.user);
+        alert("Logged in!");
+
+    } catch (error) {
+        console.error(error);
+        alert(error.code + "\n" + error.message);
+    }
 };
-
 
 
 // Check login status
