@@ -10,7 +10,8 @@ import {
     doc,
     setDoc,
     deleteDoc,
-    serverTimestamp
+    serverTimestamp,
+    getDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 import {
@@ -24,8 +25,7 @@ import {
     onSnapshot,
     serverTimestamp,
     query,
-    orderBy,
-    getDoc
+    orderBy
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
