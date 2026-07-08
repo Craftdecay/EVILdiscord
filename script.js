@@ -38,24 +38,6 @@ document.getElementById("register").onclick = async()=>{
         return;
     }
 
-
-    const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email.value,
-        password.value
-    );
-
-
-    await setDoc(
-        doc(db,"users",userCredential.user.uid),
-        {
-            username: username.value,
-            email: email.value
-        }
-    );
-
-};
-
     const userCredential = await createUserWithEmailAndPassword(
         auth,
         email.value,
