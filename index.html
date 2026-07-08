@@ -1,39 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>EVIL Discord</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+
+<body>
+
+
+<!-- LOGIN / REGISTER -->
+
 <div class="login">
 
-<h1>EVIL Discord</h1>
+    <h1>EVIL Discord</h1>
 
-<input id="username" placeholder="Username">
+    <input 
+        id="username" 
+        placeholder="Username"
+    >
 
-<input id="email" placeholder="Email">
+    <input 
+        id="email" 
+        placeholder="Email"
+        type="email"
+    >
 
-<input id="password" placeholder="Password" type="password">
+    <input 
+        id="password" 
+        placeholder="Password"
+        type="password"
+    >
 
-<button id="register">
-Create Account
-</button>
 
-<button id="login">
-Login
-</button>
+    <button id="register">
+        Create Account
+    </button>
+
+
+    <button id="login">
+        Login
+    </button>
 
 </div>
+
+
+
+
+<!-- CHAT -->
 
 <div class="chat" style="display:none;">
 
-<h2>EVIL Discord #general</h2>
 
-<div id="messages"></div>
+    <h2>
+        # general
+    </h2>
 
-<input id="messageInput" placeholder="Message">
 
-<button id="send">
-Send
-</button>
+    <div id="messages">
+
+    </div>
+
+
+
+    <div class="input-area">
+
+        <input 
+            id="messageInput"
+            placeholder="Message #general"
+        >
+
+
+        <button id="send">
+            Send
+        </button>
+
+    </div>
+
 
 </div>
+
+
 
 
 <script type="module" src="script.js"></script>
 
+
 </body>
+
 </html>
