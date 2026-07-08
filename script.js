@@ -5,13 +5,6 @@ import {
     leaveVoice
 } from "./voice.js";
 
-document.querySelectorAll(".voice-channel").forEach(channel => {
-    channel.addEventListener("click", () => {
-        console.log("Clicked:", channel.dataset.channel);
-        alert("Clicked " + channel.dataset.channel);
-    });
-});
-
 import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
@@ -41,6 +34,14 @@ const send = document.getElementById("send");
 
 
 let currentUsername = "";
+
+window.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".voice-channel").forEach(channel => {
+        channel.addEventListener("click", () => {
+            alert("Joining " + channel.dataset.channel);
+        });
+    });
+});
 
 window.addEventListener("error", (e) => {
     console.error("Script error:", e.error || e.message);
