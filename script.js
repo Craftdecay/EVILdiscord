@@ -6,6 +6,15 @@ import {
 } from "./voice.js";
 
 import {
+    collection,
+    doc,
+    setDoc,
+    deleteDoc,
+    onSnapshot,
+    serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     onAuthStateChanged
@@ -34,14 +43,88 @@ const send = document.getElementById("send");
 
 
 let currentUsername = "";
+let currentVoiceChannel = null;
+let unsubscribeVoice = null;
 
-window.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll(".voice-channel").forEach(channel => {
-        channel.addEventListener("click", () => {
-            alert("Joining " + channel.dataset.channel);
-        });
-    });
+async function joinVoiceChannel(channelName) {
+
+    currentVoiceChannel = channelName;
+
+    await setDoc(
+        doc(db, "voiceChannels", channelName, "participants", auth.currentUser.uid),
+        {
+            username: currentUsername,
+            joinedAt: serverTimestamp()
+        }
+    );
+
+    document.getElementById("voiceStatus").textContent =
+        "Connected to " + channelName;
+
+    document.getElementById("voiceControls").style.display = "flex";
+
+    watchVoiceChannel(channelName);
+}
+
+async function leaveVoiceChannel() {
+
+    if (!currentVoiceChannel) return;
+
+    await deleteDoc(
+        doc(
+            db,
+            "voiceChannels",
+            currentVoiceChannel,
+            "participants",
+            auth.currentUser.uid
+        )
+    );
+
+    currentVoiceChannel = null;
+
+    if (unsubscribeVoice) {
+        unsubscribeVoice();
+        unsubscribeVoice = null;
+    }
+
+    document.getElementById("voiceControls").style.display = "none";
+}
+
+function watchVoiceChannel(channelName) {
+
+    if (unsubscribeVoice) unsubscribeVoice();
+
+    unsubscribeVoice = onSnapshot(
+        collection(db, "voiceChannels", channelName, "participants"),
+        (snapshot) => {
+
+            console.clear();
+
+            console.log("Voice channel:", channelName);
+
+            snapshot.forEach(user => {
+
+                console.log(user.data().username);
+
+            });
+
+        }
+    );
+
+}
+
+document.querySelectorAll(".voice-channel").forEach(channel => {
+
+    channel.onclick = () => {
+
+        joinVoiceChannel(channel.dataset.channel);
+
+    };
+
 });
+
+document.getElementById("leaveVoice").onclick =
+    leaveVoiceChannel;
 
 window.addEventListener("error", (e) => {
     console.error("Script error:", e.error || e.message);
