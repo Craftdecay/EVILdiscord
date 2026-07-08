@@ -8,123 +8,88 @@ onAuthStateChanged
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-
 import {
-collection,
-addDoc,
-onSnapshot,
-serverTimestamp,
-query,
-orderBy
-}
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    collection,
+    addDoc,
+    onSnapshot,
+    serverTimestamp,
+    query,
+    orderBy
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
-
-const email = document.getElementById("email");
-const password = document.getElementById("password");
-
-
-document.getElementById("register").onclick = async()=>{
-
-await createUserWithEmailAndPassword(
-auth,
-email.value,
-password.value
-);
-
-};
+const messages = document.getElementById("messages");
+const input = document.getElementById("messageInput");
+const send = document.getElementById("send");
 
 
-
-document.getElementById("login").onclick = async()=>{
-
-await signInWithEmailAndPassword(
-auth,
-email.value,
-password.value
-);
-
-};
-
-
-
-onAuthStateChanged(auth,user=>{
-
-if(user){
-
-document.querySelector(".login").style.display="none";
-
-document.querySelector(".chat").style.display="flex";
-
-loadMessages();
-
-}
-
-});
-
-
-
-const messages=document.getElementById("messages");
-
-
+// Send message publicly
 async function sendMessage(){
 
-let input=document.getElementById("messageInput");
+    if(input.value.trim() === "")
+        return;
 
 
-if(input.value.trim()=="")
-return;
+    await addDoc(collection(db,"messages"),{
+
+        text: input.value,
+
+        username: auth.currentUser.email,
+
+        timestamp: serverTimestamp()
+
+    });
 
 
-await addDoc(collection(db,"messages"),{
-
-text:input.value,
-
-user:auth.currentUser.email,
-
-time:serverTimestamp()
-
-});
-
-
-input.value="";
+    input.value = "";
 
 }
 
 
-document.getElementById("send").onclick=sendMessage;
+send.onclick = sendMessage;
 
 
+input.addEventListener("keydown",(e)=>{
 
-function loadMessages(){
+    if(e.key === "Enter"){
+        sendMessage();
+    }
 
-const q=query(
-collection(db,"messages"),
-orderBy("time")
+});
+
+
+// Receive messages live
+const messageQuery = query(
+    collection(db,"messages"),
+    orderBy("timestamp")
 );
 
 
-onSnapshot(q,(snapshot)=>{
-
-messages.innerHTML="";
+onSnapshot(messageQuery,(snapshot)=>{
 
 
-snapshot.forEach(doc=>{
-
-let data=doc.data();
+    messages.innerHTML="";
 
 
-messages.innerHTML +=
-`
-<div>
-<b>${data.user}</b>: ${data.text}
-</div>
-`;
+    snapshot.forEach((doc)=>{
+
+        let data = doc.data();
+
+
+        messages.innerHTML += `
+
+        <div class="message">
+
+        <b>${data.username}</b>
+
+        : ${data.text}
+
+        </div>
+
+        `;
+
+
+    });
+
 
 });
-
-
-});
-
-}
