@@ -31,12 +31,14 @@ const send = document.getElementById("send");
 let currentUsername = "";
 
 
+// Create account
 document.getElementById("register").onclick = async()=>{
 
     if(username.value.trim() === ""){
         alert("Please enter a username");
         return;
     }
+
 
     const userCredential = await createUserWithEmailAndPassword(
         auth,
