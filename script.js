@@ -216,7 +216,7 @@ document.querySelectorAll(".voice-channel").forEach(channel => {
     channel.onclick = () => {
 
         joinVoiceChannel(channel.dataset.channel);
-
+        await createOffer();
     };
 
 });
