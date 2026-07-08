@@ -45,11 +45,109 @@ const send = document.getElementById("send");
 let currentUsername = "";
 let currentVoiceChannel = null;
 let unsubscribeVoice = null;
+let peerConnection = null;
+let localStream = null;
+
+const rtcConfig = {
+    iceServers: [
+        {
+            urls: [
+                "stun:stun.l.google.com:19302",
+                "stun:stun1.l.google.com:19302"
+            ]
+        }
+    ]
+};
+
+async function createPeerConnection() {
+
+    peerConnection = new RTCPeerConnection(rtcConfig);
+
+    localStream = await navigator.mediaDevices.getUserMedia({
+        audio: true,
+        video: false
+    });
+
+    localStream.getTracks().forEach(track => {
+        peerConnection.addTrack(track, localStream);
+    });
+
+    peerConnection.onconnectionstatechange = () => {
+
+        console.log(
+            "Connection:",
+            peerConnection.connectionState
+        );
+
+    };
+
+    async function createOffer(){
+
+    const callDoc = doc(
+        collection(db,"calls")
+    );
+
+    const offerCandidates = collection(
+        callDoc,
+        "offerCandidates"
+    );
+
+    const answerCandidates = collection(
+        callDoc,
+        "answerCandidates"
+    );
+
+    peerConnection.onicecandidate = async(event)=>{
+
+        if(event.candidate){
+
+            await addDoc(
+                offerCandidates,
+                event.candidate.toJSON()
+            );
+
+        }
+
+    };
+
+    const offer =
+        await peerConnection.createOffer();
+
+    await peerConnection.setLocalDescription(
+        offer
+    );
+
+    await setDoc(callDoc,{
+        offer:{
+            sdp:offer.sdp,
+            type:offer.type
+        }
+    });
+
+    console.log(
+        "Call ID:",
+        callDoc.id
+    );
+
+}
+    
+    peerConnection.oniceconnectionstatechange = () => {
+
+        console.log(
+            "ICE:",
+            peerConnection.iceConnectionState
+        );
+
+    };
+
+}
 
 async function joinVoiceChannel(channelName) {
 
     currentVoiceChannel = channelName;
-
+    
+    await createPeerConnection();
+    
     await setDoc(
         doc(db, "voiceChannels", channelName, "participants", auth.currentUser.uid),
         {
