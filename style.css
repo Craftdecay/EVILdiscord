@@ -226,3 +226,36 @@ button:hover{
 #callButton:hover{
     background:#2d7d46;
 }
+
+.voice-channel{
+    padding:8px;
+    border-radius:6px;
+    cursor:pointer;
+    margin-top:4px;
+}
+
+.voice-channel:hover{
+    background:#404249;
+}
+
+.voice-channel.connected{
+    background:#3ba55d;
+}
+
+#voiceControls{
+    display:flex;
+    gap:10px;
+    padding:10px;
+    background:#2b2d31;
+    border-top:1px solid #444;
+}
+
+#voiceControls button{
+    background:#5865F2;
+}
+
+#voiceStatus{
+    flex:1;
+    display:flex;
+    align-items:center;
+}
