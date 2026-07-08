@@ -1,6 +1,11 @@
 import { auth, db } from "./firebase.js";
 
 import {
+    joinVoice,
+    leaveVoice
+} from "./voice.js";
+
+import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     onAuthStateChanged
