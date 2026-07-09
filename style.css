@@ -32,7 +32,7 @@ body{
 .login h1{
     text-align:center;
     margin-bottom:20px;
-    color:#5865F2;
+    color:#d32f2f;
 }
 
 
@@ -58,7 +58,7 @@ input::placeholder{
 
 button{
 
-    background:#5865F2;
+    background:#d32f2f;
 
     color:white;
 
@@ -158,7 +158,7 @@ button:hover{
 
 .message b{
 
-    color:#5865F2;
+    color:#d32f2f;
 
 }
 
@@ -251,7 +251,7 @@ button:hover{
 }
 
 #voiceControls button{
-    background:#5865F2;
+    background:#d32f2f;
 }
 
 #voiceStatus{
