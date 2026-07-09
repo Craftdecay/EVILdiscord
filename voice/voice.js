@@ -1,9 +1,9 @@
+import { startSignaling, stopSignaling } from "./signaling.js";
+
 export let localStream = null;
 export let currentVoiceChannel = null;
 
 export const peerConnections = new Map();
-
-import { startSignaling, stopSignaling } from "./signaling.js";
 
 const rtcConfig = {
     iceServers: [
