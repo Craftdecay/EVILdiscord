@@ -60,7 +60,9 @@ export async function joinVoice(channelName) {
 
 }
 
-export function leaveVoice() {
+export async function leaveVoice() {
+    
+    await stopSignaling();
 
     peerConnections.forEach(pc => pc.close());
     peerConnections.clear();
