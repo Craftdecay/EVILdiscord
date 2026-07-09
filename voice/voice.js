@@ -17,7 +17,7 @@ const rtcConfig = {
 };
 
 export async function joinVoice(channelName) {
-
+    
     try {
 
         if (!localStream) {
@@ -46,6 +46,10 @@ export async function joinVoice(channelName) {
         }
 
         console.log("Joined voice:", channelName);
+
+
+        // Start WebRTC signaling
+        await startSignaling(channelName);
 
     } catch (err) {
 
