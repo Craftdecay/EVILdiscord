@@ -108,6 +108,8 @@ async function createPeerConnection() {
     const offer =
         await peerConnection.createOffer();
 
+        await createOffer();
+
     await peerConnection.setLocalDescription(
         offer
     );
@@ -211,7 +213,6 @@ document.querySelectorAll(".voice-channel").forEach(channel => {
     channel.onclick = () => {
 
         joinVoiceChannel(channel.dataset.channel);
-        await createOffer();
     };
 
 });
