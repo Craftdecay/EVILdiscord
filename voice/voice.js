@@ -1,4 +1,5 @@
 import { startSignaling, stopSignaling } from "./signaling.js";
+import { auth } from "../firebase.js";
 
 export let localStream = null;
 export let currentVoiceChannel = null;
@@ -149,6 +150,26 @@ export async function createPeer(userId) {
 
     };
 
+    pc.onicecandidate = (event) => {
+
+    if (!event.candidate) return;
+
+
+    import("./signaling.js")
+        .then(({ sendSignal }) => {
+
+            sendSignal(
+                currentVoiceChannel,
+                {
+                    type: "ice",
+                    target: userId,
+                    candidate: event.candidate,
+                    sender: auth.currentUser.uid
+                }
+            );
+
+        });
+    
     return pc;
 
 }
