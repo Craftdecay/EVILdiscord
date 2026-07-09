@@ -91,72 +91,81 @@ export async function leaveVoice() {
 
 export async function createPeer(userId) {
 
-    pc.onicecandidate = (event)=>{
-
-    if(event.candidate){
-
-        import("./signaling.js")
-        .then(module=>{
-
-            module.sendSignal(
-                currentVoiceChannel,
-                {
-                    type:"ice",
-                    target:userId,
-                    candidate:event.candidate,
-                    sender:auth.currentUser.uid
-                }
-            );
-
-        });
-    
     if (peerConnections.has(userId)) {
         return peerConnections.get(userId);
     }
 
+
     const pc = new RTCPeerConnection(rtcConfig);
+
 
     peerConnections.set(userId, pc);
 
+
     if (localStream) {
+
         localStream.getTracks().forEach(track => {
+
             pc.addTrack(track, localStream);
+
         });
+
     }
 
+
     pc.onconnectionstatechange = () => {
-        console.log(`${userId} Connection: ${pc.connectionState}`);
+
+        console.log(
+            `${userId} Connection: ${pc.connectionState}`
+        );
+
     };
 
+
     pc.oniceconnectionstatechange = () => {
-        console.log(`${userId} ICE: ${pc.iceConnectionState}`);
+
+        console.log(
+            `${userId} ICE: ${pc.iceConnectionState}`
+        );
+
     };
+
+
 
     pc.ontrack = (event) => {
 
-        let audio = document.getElementById("audio-" + userId);
+        let audio = document.getElementById(
+            "audio-" + userId
+        );
+
 
         if (!audio) {
 
             audio = document.createElement("audio");
+
             audio.id = "audio-" + userId;
+
             audio.autoplay = true;
 
             document.body.appendChild(audio);
 
         }
 
+
         audio.srcObject = event.streams[0];
 
     };
 
+
+
     pc.onicecandidate = (event) => {
 
-    if (!event.candidate) return;
+        if (!event.candidate) return;
 
 
-    import("./signaling.js")
+        import("./signaling.js")
         .then(({ sendSignal }) => {
+
 
             sendSignal(
                 currentVoiceChannel,
@@ -168,8 +177,12 @@ export async function createPeer(userId) {
                 }
             );
 
+
         });
-    
+
+    };
+
+
     return pc;
-    }
+
 }
