@@ -26,6 +26,7 @@ export async function joinVoice(channelName) {
             });
             console.log("Microphone stream:", localStream);
             console.log("Tracks:", localStream.getAudioTracks());
+            console.log(localStream.getAudioTracks()[0].readyState);
 
         }
 
