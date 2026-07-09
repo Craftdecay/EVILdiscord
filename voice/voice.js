@@ -3,6 +3,8 @@ export let currentVoiceChannel = null;
 
 export const peerConnections = new Map();
 
+import { startSignaling, stopSignaling } from "./signaling.js";
+
 const rtcConfig = {
     iceServers: [
         {
@@ -82,6 +84,25 @@ export function leaveVoice() {
 
 export async function createPeer(userId) {
 
+    pc.onicecandidate = (event)=>{
+
+    if(event.candidate){
+
+        import("./signaling.js")
+        .then(module=>{
+
+            module.sendSignal(
+                currentVoiceChannel,
+                {
+                    type:"ice",
+                    target:userId,
+                    candidate:event.candidate,
+                    sender:auth.currentUser.uid
+                }
+            );
+
+        });
+    
     if (peerConnections.has(userId)) {
         return peerConnections.get(userId);
     }
